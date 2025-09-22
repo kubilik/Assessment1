@@ -92,8 +92,10 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(dashDir * dashSpeed, 0f);
 
             dashTimeLeft -= Time.fixedDeltaTime;
+            anim.SetBool("isDashing", true);
             if (dashTimeLeft <= 0f)
             {
+                anim.SetBool("isDashing", false);
                 isDashing = false;
             }
             return; // dashing sýrasýnda normal hareketi engelle
@@ -115,7 +117,11 @@ public class PlayerController : MonoBehaviour
         isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
     }
 
-
+    public bool ChangeDashingState(bool state)
+    {
+        isDashing = state;
+        return isDashing;
+    }
     void Flip()
     {
         facingRight = !facingRight;

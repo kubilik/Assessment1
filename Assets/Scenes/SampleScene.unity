@@ -1318,15 +1318,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  jumpForce: 3
+  jumpForce: 8
   extraJumps: 1
   groundCheck: {fileID: 190664617}
-  groundCheckRadius: 0.1
-  groundLayer:
+  groundCheckDistance: 0.6
+  whatIsGround:
     serializedVersion: 2
     m_Bits: 8
   dashSpeed: 20
-  dashTime: 0.2
+  dashTime: 1
   dashCooldown: 0.5
 --- !u!4 &1766088805
 Transform:
@@ -1577,6 +1577,7 @@ GameObject:
   - component: {fileID: 7738907795338434799}
   - component: {fileID: 7738907795338434796}
   - component: {fileID: 7738907795338434797}
+  - component: {fileID: 7738907795338434800}
   m_Layer: 0
   m_Name: Player Renderer
   m_TagString: Untagged
@@ -1676,6 +1677,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1766088805}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7738907795338434800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7738907795338434794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7900f65ddd228034abbdf0f49efa55da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
