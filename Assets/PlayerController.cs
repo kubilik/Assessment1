@@ -26,6 +26,12 @@ public class PlayerController : MonoBehaviour
     private float dashTimeLeft;
     private float dashCooldownTimer;
 
+
+    [Header("Attack")]
+    [SerializeField] private float AttackDamage = 10f;
+    [SerializeField] private Transform attackPoint;
+
+
     private Rigidbody2D rb;
     private Animator anim;
     private float horizontal;
@@ -43,9 +49,40 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
+
         HandleCollision();
+        HandleJump();
+        HandleDash();
 
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            attackPoint.gameObject.SetActive(true);
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            attackPoint.gameObject.SetActive(false);
+        }
+    }
 
+    private void HandleDash()
+    {
+        if (horizontal > 0.01f && !facingRight) Flip();
+        else if (horizontal < -0.01f && facingRight) Flip();
+
+        // Dash input (LeftShift tuþu örnek)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && dashCooldownTimer <= 0f && !isDashing)
+        {
+            isDashing = true;
+            dashTimeLeft = dashTime;
+            dashCooldownTimer = dashCooldown;
+        }
+
+        if (dashCooldownTimer > 0f)
+            dashCooldownTimer -= Time.deltaTime;
+    }
+
+    private void HandleJump()
+    {
         anim.SetBool("isGrounded", isGrounded);
 
         if (isGrounded)
@@ -66,25 +103,21 @@ public class PlayerController : MonoBehaviour
                 extraJumpsLeft--;
             }
         }
-
-
-        if (horizontal > 0.01f && !facingRight) Flip();
-        else if (horizontal < -0.01f && facingRight) Flip();
-
-        // Dash input (LeftShift tuþu örnek)
-        if (Input.GetKeyDown(KeyCode.LeftShift) && dashCooldownTimer <= 0f && !isDashing)
-        {
-            isDashing = true;
-            dashTimeLeft = dashTime;
-            dashCooldownTimer = dashCooldown;
-        }
-
-        if (dashCooldownTimer > 0f)
-            dashCooldownTimer -= Time.deltaTime;
     }
 
-
     void FixedUpdate()
+    {
+        bool flowControl = HandleFixedDash();
+        if (!flowControl)
+        {
+            return;
+        }
+
+        rb.linearVelocity = new Vector2(horizontal * moveSpeed, rb.linearVelocity.y);
+        HandleAnimations();
+    }
+
+    private bool HandleFixedDash()
     {
         if (isDashing)
         {
@@ -98,13 +131,11 @@ public class PlayerController : MonoBehaviour
                 anim.SetBool("isDashing", false);
                 isDashing = false;
             }
-            return; // dashing sýrasýnda normal hareketi engelle
+            return false; // dashing sýrasýnda normal hareketi engelle
         }
 
-        rb.linearVelocity = new Vector2(horizontal * moveSpeed, rb.linearVelocity.y);
-        HandleAnimations();
+        return true;
     }
-
 
     void DoJump()
     {
@@ -134,6 +165,15 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetFloat("xVelocity", rb.linearVelocity.x);
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy"))
+        {
+            Debug.Log("Enemy hit!");
+            // Burada düþmana hasar verme kodunu ekleyebilirsiniz.
+        }
     }
 
     void OnDrawGizmos()
