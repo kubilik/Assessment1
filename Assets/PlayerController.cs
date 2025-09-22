@@ -14,19 +14,20 @@ public class PlayerController : MonoBehaviour
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck; // empty child transform positioned at feet
-    [SerializeField] private float groundCheckRadius = 0.1f;
-    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float groundCheckDistance = 0.1f;
+    [SerializeField] private LayerMask whatIsGround;
+    private bool isGrounded;
 
     [Header("Dash")]
     [SerializeField] private float dashSpeed = 20f;
     [SerializeField] private float dashTime = 0.2f;
     [SerializeField] private float dashCooldown = 0.5f;
-
     private bool isDashing;
     private float dashTimeLeft;
     private float dashCooldownTimer;
 
     private Rigidbody2D rb;
+    private Animator anim;
     private float horizontal;
     private bool facingRight = true;
     private int extraJumpsLeft;
@@ -34,6 +35,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponentInChildren<Animator>();
         extraJumpsLeft = extraJumps;
     }
 
@@ -41,10 +43,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
+        HandleCollision();
 
 
-        bool grounded = IsGrounded();
-        if (grounded)
+        anim.SetBool("isGrounded", isGrounded);
+
+        if (isGrounded)
         {
             extraJumpsLeft = extraJumps;
         }
@@ -52,7 +56,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            if (grounded)
+            if (isGrounded)
             {
                 DoJump();
             }
@@ -96,6 +100,7 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.linearVelocity = new Vector2(horizontal * moveSpeed, rb.linearVelocity.y);
+        HandleAnimations();
     }
 
 
@@ -105,12 +110,9 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
-
-    bool IsGrounded()
+    private void HandleCollision()
     {
-        if (groundCheck == null) return false;
-        Collider2D col = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        return col != null;
+        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
     }
 
 
@@ -122,13 +124,18 @@ public class PlayerController : MonoBehaviour
         transform.localScale = s;
     }
 
+    private void HandleAnimations()
+    {
+        anim.SetFloat("xVelocity", rb.linearVelocity.x);
+        anim.SetFloat("yVelocity", rb.linearVelocity.y);
+    }
 
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
         if (groundCheck != null)
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+            Gizmos.DrawLine(groundCheck.position, new Vector2(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
         }
     }
 }
