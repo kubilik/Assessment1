@@ -563,6 +563,7 @@ GameObject:
   - component: {fileID: 683164375}
   - component: {fileID: 683164374}
   - component: {fileID: 683164373}
+  - component: {fileID: 683164376}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -676,6 +677,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &683164376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 683164372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb7906c18cdee1a49baebc8980982c7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &692201921
 GameObject:
   m_ObjectHideFlags: 0
@@ -1479,7 +1492,7 @@ GameObject:
   - component: {fileID: 1766088807}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1532,10 +1545,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   dashSpeed: 20
-  dashTime: 1
+  dashTime: 0.2
   dashCooldown: 0.5
-  AttackDamage: 10
   attackPoint: {fileID: 1324899827}
+  comboResetTime: 1.5
+  ComboAttackDamage1: 10
+  ComboAttackDamage2: 20
+  ComboAttackDamage3: 30
 --- !u!4 &1766088805
 Transform:
   m_ObjectHideFlags: 0

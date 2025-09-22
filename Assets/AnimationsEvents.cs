@@ -30,6 +30,16 @@ public class AnimationsEvents : MonoBehaviour
 
     public void AnimationAttackingFalse()
     {
+        Player.controller.NextComboStep();
         Anim.SetBool("Attack", false);
+    }
+
+    public void AnimationCanAttackingTrue()
+    {
+        Player.controller.SetCanAttack(true);
+    }
+    public void AnimationCanAttackingFalse()
+    {
+        Player.controller.SetCanAttack(false);
     }
 }

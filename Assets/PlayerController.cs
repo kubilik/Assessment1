@@ -28,11 +28,17 @@ public class PlayerController : MonoBehaviour
 
 
     [Header("Attack")]
-    [SerializeField] private float AttackDamage = 10f;
     [SerializeField] private Transform attackPoint;
-    private AttackHitbox hitboxScript;
-    private int comboStep = 0;
+    [SerializeField] private float comboResetTime = 1.5f; // kaç saniye sonra resetlenecek
+    [Space]
+    [SerializeField] private int ComboAttackDamage1;
+    [SerializeField] private int ComboAttackDamage2;
+    [SerializeField] private int ComboAttackDamage3;
 
+    private AttackHitbox hitboxScript;
+    private int comboStep = 1;
+    private float comboResetTimer = 0f;
+    private bool canAttack;
 
     private Rigidbody2D rb;
     private Animator anim;
@@ -65,10 +71,28 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetBool("Attack", true);
         }
-        if (Input.GetKeyUp(KeyCode.Mouse0))
+
+        // Eðer kombodayken zaman dolarsa resetle
+        if (comboStep > 0)
         {
-            anim.SetBool("Attack", false);
+            comboResetTimer -= Time.deltaTime;
+            if (comboResetTimer <= 0f)
+            {
+                comboStep = 1;
+                anim.SetInteger("ComboCounter", comboStep);
+                Debug.Log("Combo resetlendi!");
+            }
         }
+
+        //if (Input.GetKey(KeyCode.Mouse0))
+        //{
+        //    if (canAttack)
+        //        anim.SetBool("Attack", true);
+        //} 
+    }
+    public void SetCanAttack(bool state)
+    {
+        canAttack = state;
     }
 
     // Bu fonksiyon animasyon event’inden çaðrýlacak
@@ -76,13 +100,14 @@ public class PlayerController : MonoBehaviour
     {
         // Kombo hasarýný ayarla
         int damage = 1;
-        if (comboStep == 0) damage = 1;
-        else if (comboStep == 1) damage = 2;
-        else if (comboStep == 2) damage = 3;
+        if (comboStep == 1) damage = ComboAttackDamage1;
+        else if (comboStep == 2) damage = ComboAttackDamage2;
+        else if (comboStep == 3) damage = ComboAttackDamage3;
 
         hitboxScript.damage = damage;
         attackPoint.gameObject.SetActive(true);
     }
+
     public void DisableHitbox()
     {
         attackPoint.gameObject.SetActive(false);
@@ -92,7 +117,11 @@ public class PlayerController : MonoBehaviour
     public void NextComboStep()
     {
         comboStep++;
-        if (comboStep > 2) comboStep = 0; // 3. saldýrýdan sonra baþa dön
+        if (comboStep > 3) comboStep = 1; // 3. saldýrýdan sonra baþa dön
+        anim.SetInteger("ComboCounter", comboStep);
+
+        comboResetTimer = comboResetTime; // süreyi sýfýrla
+        Debug.Log("Combo Step: " + (comboStep));
     }
     private void HandleDash()
     {
@@ -197,14 +226,6 @@ public class PlayerController : MonoBehaviour
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Enemy"))
-        {
-            //Debug.Log("Enemy hit!");
-            // Burada düþmana hasar verme kodunu ekleyebilirsiniz.
-        }
-    }
 
     void OnDrawGizmos()
     {
