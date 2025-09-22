@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
@@ -40,6 +41,18 @@ public class PlayerController : MonoBehaviour
     private float comboResetTimer = 0f;
     private bool canAttack;
 
+
+    [Header("Axe Settings")]
+    [SerializeField] private GameObject axePrefab;
+    [SerializeField] private Transform axeSpawnPoint;
+    [SerializeField] private float throwForce = 10f;
+    [SerializeField] private float spinSpeed = 720f; // derece/sn
+    [SerializeField] private int axeDamage = 2;
+    [SerializeField] private int maxAxes = 3;
+
+    private int currentAxes;
+
+
     private Rigidbody2D rb;
     private Animator anim;
     private float horizontal;
@@ -57,6 +70,7 @@ public class PlayerController : MonoBehaviour
     {
         hitboxScript = attackPoint.GetComponent<AttackHitbox>();
         attackPoint.gameObject.SetActive(false);
+        currentAxes = maxAxes;
     }
 
     void Update()
@@ -66,7 +80,16 @@ public class PlayerController : MonoBehaviour
         HandleCollision();
         HandleJump();
         HandleDash();
+        HandleMeleeAttack();
 
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            anim.SetBool("ThrowAxe", true);
+        }
+    }
+
+    private void HandleMeleeAttack()
+    {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             anim.SetBool("Attack", true);
@@ -80,7 +103,6 @@ public class PlayerController : MonoBehaviour
             {
                 comboStep = 1;
                 anim.SetInteger("ComboCounter", comboStep);
-                Debug.Log("Combo resetlendi!");
             }
         }
 
@@ -90,6 +112,36 @@ public class PlayerController : MonoBehaviour
         //        anim.SetBool("Attack", true);
         //} 
     }
+
+    // Animasyon eventinden çaðrýlacak
+    public void SpawnAxe()
+    {
+        if (currentAxes <= 0)
+        {
+            Debug.Log("No axes left!");
+            return;
+        }
+
+        GameObject axe = Instantiate(axePrefab, axeSpawnPoint.position, Quaternion.identity);
+        Axe axeScript = axe.GetComponent<Axe>();
+        axeScript.Initialize(axeDamage, spinSpeed, this);
+
+        Rigidbody2D rb = axe.GetComponent<Rigidbody2D>();
+        rb.linearVelocity = transform.localScale.x * Vector2.right * throwForce;
+
+        currentAxes--;
+        Debug.Log("Axes left: " + currentAxes);
+    }
+
+    public void AddAxe()
+    {
+        if (currentAxes < maxAxes)
+        {
+            currentAxes++;
+            Debug.Log("Picked up axe. Axes: " + currentAxes);
+        }
+    }
+
     public void SetCanAttack(bool state)
     {
         canAttack = state;

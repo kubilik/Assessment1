@@ -42,4 +42,14 @@ public class AnimationsEvents : MonoBehaviour
     {
         Player.controller.SetCanAttack(false);
     }
+
+    public void SpawnAxe()
+    {
+        Player.controller.SpawnAxe();
+    }
+
+    public void SpawnAxeFalse()
+    {
+        Anim.SetBool("ThrowAxe", false);
+    }
 }
