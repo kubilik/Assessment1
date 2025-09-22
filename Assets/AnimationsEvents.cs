@@ -18,10 +18,18 @@ public class AnimationsEvents : MonoBehaviour
         Anim.SetBool("isDashing", false);
         Player.controller.ChangeDashingState(false);
     }
-
-    // Update is called once per frame
-    void Update()
+    public void AnimationEnableHitbox()
     {
+        Player.controller.EnableHitbox();
+    }
 
+    public void AnimationDisableHitbox()
+    {
+        Player.controller.DisableHitbox();
+    }
+
+    public void AnimationAttackingFalse()
+    {
+        Anim.SetBool("Attack", false);
     }
 }

@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
     [Header("Attack")]
     [SerializeField] private float AttackDamage = 10f;
     [SerializeField] private Transform attackPoint;
+    private AttackHitbox hitboxScript;
+    private int comboStep = 0;
 
 
     private Rigidbody2D rb;
@@ -45,6 +47,11 @@ public class PlayerController : MonoBehaviour
         extraJumpsLeft = extraJumps;
     }
 
+    private void Start()
+    {
+        hitboxScript = attackPoint.GetComponent<AttackHitbox>();
+        attackPoint.gameObject.SetActive(false);
+    }
 
     void Update()
     {
@@ -56,14 +63,37 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            attackPoint.gameObject.SetActive(true);
+            anim.SetBool("Attack", true);
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            attackPoint.gameObject.SetActive(false);
+            anim.SetBool("Attack", false);
         }
     }
 
+    // Bu fonksiyon animasyon event’inden çaðrýlacak
+    public void EnableHitbox()
+    {
+        // Kombo hasarýný ayarla
+        int damage = 1;
+        if (comboStep == 0) damage = 1;
+        else if (comboStep == 1) damage = 2;
+        else if (comboStep == 2) damage = 3;
+
+        hitboxScript.damage = damage;
+        attackPoint.gameObject.SetActive(true);
+    }
+    public void DisableHitbox()
+    {
+        attackPoint.gameObject.SetActive(false);
+    }
+
+    // Komboyu ilerletmek için (animasyon baþlarken çaðýrabilirsin)
+    public void NextComboStep()
+    {
+        comboStep++;
+        if (comboStep > 2) comboStep = 0; // 3. saldýrýdan sonra baþa dön
+    }
     private void HandleDash()
     {
         if (horizontal > 0.01f && !facingRight) Flip();
@@ -171,7 +201,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            Debug.Log("Enemy hit!");
+            //Debug.Log("Enemy hit!");
             // Burada düþmana hasar verme kodunu ekleyebilirsiniz.
         }
     }

@@ -859,6 +859,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1324899827}
   - component: {fileID: 1324899828}
+  - component: {fileID: 1324899829}
   m_Layer: 0
   m_Name: EnemyCheck
   m_TagString: Untagged
@@ -917,6 +918,19 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.3228245
+--- !u!114 &1324899829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324899826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 453daa4d6fd04774097f70e9b831c797, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
 --- !u!1 &1354470298
 GameObject:
   m_ObjectHideFlags: 0
