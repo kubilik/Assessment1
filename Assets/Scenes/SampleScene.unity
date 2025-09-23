@@ -1585,8 +1585,8 @@ MonoBehaviour:
   ComboAttackDamage3: 30
   axePrefab: {fileID: 1674873326700359371, guid: 2fad0904bf486a442888e96da6242408, type: 3}
   axeSpawnPoint: {fileID: 200269807}
-  throwForce: 20
-  spinSpeed: 800
+  throwForce: 2
+  spinSpeed: -800
   axeDamage: 2
   maxAxes: 10
 --- !u!4 &1766088805
@@ -1963,10 +1963,6 @@ PrefabInstance:
     - target: {fileID: 1674873326700359371, guid: 2fad0904bf486a442888e96da6242408, type: 3}
       propertyPath: m_Name
       value: Axe
-      objectReference: {fileID: 0}
-    - target: {fileID: 3452360135483914880, guid: 2fad0904bf486a442888e96da6242408, type: 3}
-      propertyPath: m_GravityScale
-      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 6308451521733336498, guid: 2fad0904bf486a442888e96da6242408, type: 3}
       propertyPath: m_LocalPosition.x
