@@ -28,7 +28,10 @@ public class AnimationsEvents : MonoBehaviour
     {
         EnemyMelee.ChangeAlertToFalse();
     }
-
+    public void EnemyAnimationChangeAttackToFalse()
+    {
+        EnemyMelee.ChangeAttackToFalse();
+    }
     public void AnimationDisableHitbox()
     {
         Player.controller.DisableHitbox();

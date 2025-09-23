@@ -4,6 +4,7 @@ public class EnemyMelee : MonoBehaviour
 {
     [SerializeField] private float idleSpeed = 1f; // Düþmanýn hareket hýzý
     [SerializeField] private float detectionRange = 5f;  // Player'ý algýlama mesafesi
+    [SerializeField] private float attackRange = 5f;  // Player'ý algýlama mesafesi
     [SerializeField] private float RunSpeed = 2f; // Düþmanýn hareket hýzý
 
     [Header("Ground Settings")]
@@ -23,6 +24,7 @@ public class EnemyMelee : MonoBehaviour
     private bool idle;
     private bool hit;
 
+    public float playerDistance;
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
@@ -37,11 +39,10 @@ public class EnemyMelee : MonoBehaviour
     {
         Groundcheck();
         if (!isGrounded) Flip(); // Havadaysa yönünü deðiþtir
+        playerDistance = Vector2.Distance(transform.position, player.position);
 
 
-        float distance = Vector2.Distance(transform.position, player.position);
-
-        if (distance <= detectionRange)
+        if (playerDistance <= detectionRange && playerDistance > attackRange)
         {
             if (run == false)
             {
@@ -56,27 +57,51 @@ public class EnemyMelee : MonoBehaviour
             if (player.position.x > transform.position.x && !facingRight)
             {
                 Flip();
+
+                Debug.Log("1");
             }
             else if (player.position.x < transform.position.x && facingRight)
             {
                 Flip();
+
+                Debug.Log("2");
             }
             // Düþman, player'a doðru hareket etsin
             if (isGrounded)
             {
+                Debug.Log("value");
                 Vector2 direction = (player.position - transform.position).normalized;
                 transform.position += (Vector3)direction * RunSpeed * Time.deltaTime;
             }
         }
-        else if (distance > detectionRange)
+        else if (playerDistance > detectionRange)
         {
             run = false;
             anim.SetBool("Run", run);
             idle = true;
             anim.SetBool("Idle", idle);
         }
+        if (playerDistance <= attackRange)
+        {
+            // Player düþmanýn saðýnda mý solunda mý kontrol et
+            if (player.position.x > transform.position.x && !facingRight)
+            {
+                Flip();
+            }
+            else if (player.position.x < transform.position.x && facingRight)
+            {
+                Flip();
+            }
 
-        if (isGrounded && !run)
+            run = false;
+            anim.SetBool("Run", run);
+            idle = false;
+            anim.SetBool("Idle", idle);
+            attack = true;
+            anim.SetBool("Attack", attack);
+        }
+
+        if (isGrounded && !run && !attack)
             transform.position += Vector3.left * idleSpeed * facingDirection * Time.deltaTime;
     }
 
@@ -103,13 +128,22 @@ public class EnemyMelee : MonoBehaviour
         anim.SetBool("Run", run);
     }
 
+    public void ChangeAttackToFalse()
+    {
+        attack = false;
+        anim.SetBool("Attack", attack); 
+    }
+
     // Editor içinde detection range’ini görselleþtir
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
 
         Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+
+        Gizmos.color = Color.red;
         Gizmos.DrawLine(groundCheck.position, groundCheck.position + Vector3.down * groundCheckDistance);
 
     }
