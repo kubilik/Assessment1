@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform axeSpawnPoint;
     [SerializeField] private float throwForce = 10f;
     [SerializeField] private float spinSpeed = 720f; // derece/sn
+    [Space]
     [SerializeField] private int axeDamage = 2;
     [SerializeField] private int maxAxes = 3;
 
@@ -131,7 +132,7 @@ public class PlayerController : MonoBehaviour
         currentAxes--;
         Debug.Log("Axes left: " + currentAxes);
     }
-     
+
 
     public void SetCanAttack(bool state)
     {
@@ -264,6 +265,12 @@ public class PlayerController : MonoBehaviour
         isDashing = state;
         return isDashing;
     }
+
+    public bool IsGrounded()
+    {
+        return isGrounded;
+    }
+
     void Flip()
     {
         facingRight = !facingRight;
