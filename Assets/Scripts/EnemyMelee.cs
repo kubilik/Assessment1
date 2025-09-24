@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class EnemyMelee : MonoBehaviour
 {
+    [Header("Attack")]
+    [SerializeField] private float AttackDamage = 5f;
+
+    [Header("Movement")]
     [SerializeField] private float idleSpeed = 1f; // Düþmanýn hareket hýzý
     [SerializeField] private float detectionRange = 5f;  // Player'ý algýlama mesafesi
     [SerializeField] private float attackRange = 5f;  // Player'ý algýlama mesafesi
@@ -38,40 +42,45 @@ public class EnemyMelee : MonoBehaviour
     void Update()
     {
         Groundcheck();
+
+
+
+        bool flowControl = MovementControl();
+        if (!flowControl)
+        {
+            return;
+        }
+    }
+
+    private bool MovementControl()
+    {
         if (!isGrounded) Flip(); // Havadaysa yönünü deðiþtir
         playerDistance = Vector2.Distance(transform.position, player.position);
 
 
         if (playerDistance <= detectionRange && playerDistance > attackRange)
         {
-
-            Debug.Log("value");
             if (run == false && alert == false)
             {
                 alert = true;
                 anim.SetBool("Alert", alert);
                 idle = false;
                 anim.SetBool("Idle", idle);
-                return; // Alert animasyonu oynatýldýktan sonra bekle
+                return false; // Alert animasyonu oynatýldýktan sonra bekle
             }
 
             // Player düþmanýn saðýnda mý solunda mý kontrol et
             if (player.position.x > transform.position.x && !facingRight)
             {
                 Flip();
-
-                Debug.Log("1");
             }
             else if (player.position.x < transform.position.x && facingRight)
             {
                 Flip();
-
-                Debug.Log("2");
             }
             // Düþman, player'a doðru hareket etsin
             if (isGrounded)
             {
-                Debug.Log("value");
                 Vector2 direction = (player.position - transform.position).normalized;
                 transform.position += (Vector3)direction * RunSpeed * Time.deltaTime;
             }
@@ -105,6 +114,7 @@ public class EnemyMelee : MonoBehaviour
 
         if (isGrounded && !run && !attack)
             transform.position += Vector3.left * idleSpeed * facingDirection * Time.deltaTime;
+        return true;
     }
 
     private void Flip()
@@ -134,6 +144,11 @@ public class EnemyMelee : MonoBehaviour
     {
         attack = false;
         anim.SetBool("Attack", attack);
+    }
+
+    public float GetAttackDamage()
+    {
+        return AttackDamage;
     }
 
     // Editor içinde detection range’ini görselleþtir

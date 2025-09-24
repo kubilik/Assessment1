@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,6 +12,9 @@ public class PlayerHealth : MonoBehaviour
     public UnityEvent onDeath;
     public UnityEvent<int, int> onHealthChanged; // (currentHealth, maxHealth)
 
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI healthText;
+
     void Awake()
     {
         currentHealth = maxHealth;
@@ -20,6 +24,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        healthText.text = "Health: " + currentHealth.ToString();
 
         onHealthChanged?.Invoke(currentHealth, maxHealth);
 
@@ -33,6 +38,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        healthText.text = "Health: " + currentHealth.ToString();
 
         onHealthChanged?.Invoke(currentHealth, maxHealth);
     }

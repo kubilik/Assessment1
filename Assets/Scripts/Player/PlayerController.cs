@@ -52,7 +52,6 @@ public class PlayerController : MonoBehaviour
 
     private int currentAxes;
 
-
     private Rigidbody2D rb;
     private Animator anim;
     private float horizontal;
@@ -192,6 +191,10 @@ public class PlayerController : MonoBehaviour
             dashCooldownTimer -= Time.deltaTime;
     }
 
+    public void ChangeAnimHitTo(bool state)
+    {
+        anim.SetBool("Hit", state);
+    }
     private void HandleJump()
     {
         anim.SetBool("isGrounded", isGrounded);
