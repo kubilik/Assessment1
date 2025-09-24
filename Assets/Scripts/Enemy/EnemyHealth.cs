@@ -1,36 +1,34 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class PlayerHealth : MonoBehaviour
+public class EnemyHealth : MonoBehaviour
 {
     [Header("Health Settings")]
     [SerializeField] private int maxHealth = 100;
     [SerializeField] private int currentHealth;
 
-    [Header("UI")]
-    [SerializeField] private TextMeshProUGUI healthText;
-    private PlayerController playerController;
+    private Animator anim;
+    private EnemyMelee enemyMelee;
 
     void Awake()
     {
         currentHealth = maxHealth;
     }
+
     private void Start()
     {
-        playerController = GetComponent<PlayerController>();
+        anim = GetComponentInChildren<Animator>();
+        enemyMelee = GetComponent<EnemyMelee>();
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        healthText.text = "Health: " + currentHealth.ToString();
-        playerController.ChangeAnimHitTo(true);
-
+        anim.SetBool("Hit", true);
 
         if (currentHealth <= 0)
         {
+            enemyMelee.SetDeadBool();
             Die();
         }
     }
@@ -39,19 +37,13 @@ public class PlayerHealth : MonoBehaviour
         return currentHealth;
     }
 
-    public void Heal(int amount)
-    {
-        currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        healthText.text = "Health: " + currentHealth.ToString();
-    }
 
     void Die()
     {
-        Debug.Log("Player died!");
-
-        playerController.ChangeAnimDeadTo(true);
+        Debug.Log("Enemy died!");
+        anim.SetBool("Dead", true);
         //Destroy(gameObject);
         // Ýstersen burada: Destroy(gameObject); veya respawn sistemi ekleyebilirsin
     }
+
 }

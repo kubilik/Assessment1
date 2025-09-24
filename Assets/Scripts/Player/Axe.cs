@@ -15,11 +15,6 @@ public class Axe : MonoBehaviour
         owner = player;
     }
 
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody2D>();
-    }
-
     private void Update()
     {
         if (!isStuck)
@@ -28,15 +23,15 @@ public class Axe : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isStuck && collision.collider.CompareTag("Enemy"))
+        if (!isStuck && collision.CompareTag("Enemy"))
         {
             Debug.Log("Axe hit enemy for " + damage + " damage!");
-            // collision.collider.GetComponent<EnemyHealth>()?.TakeDamage(damage);
+            collision.GetComponent<EnemyHealth>()?.TakeDamage(damage);
         }
 
-        if (!isStuck && collision.collider.CompareTag("Ground"))
+        if (!isStuck && collision.CompareTag("Ground"))
         {
             isStuck = true;
 
@@ -49,12 +44,4 @@ public class Axe : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (isStuck && collision.CompareTag("Player") && Input.GetKeyDown(KeyCode.E))
-        {
-            owner.AddAxe();
-            Destroy(gameObject);
-        }
-    }
 }

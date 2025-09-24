@@ -47,6 +47,16 @@ public class AnimationsEvents : MonoBehaviour
         Player.controller.DisableHitbox();
     }
 
+    public void EnemyAnimationHitFalse()
+    {
+        EnemyMelee.ChangeEnemyAnimHitToFalse();
+    }
+
+    public void EnemyDead()
+    {
+        EnemyMelee.SetDead();
+    }
+
     public void AnimationAttackingFalse()
     {
         Player.controller.NextComboStep();

@@ -30,9 +30,16 @@ public class EnemyMelee : MonoBehaviour
     private bool hit;
 
     public float playerDistance;
+    private BoxCollider2D boxCollider;
+    private CircleCollider2D circleCollider;
+    private Rigidbody2D rb;
+
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
+        boxCollider = GetComponent<BoxCollider2D>();
+        circleCollider = GetComponent<CircleCollider2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Start()
@@ -43,6 +50,7 @@ public class EnemyMelee : MonoBehaviour
 
     void Update()
     {
+        if (dead) return;
         Groundcheck();
 
         if (PlayerController.isDead)
@@ -157,6 +165,30 @@ public class EnemyMelee : MonoBehaviour
     public float GetAttackDamage()
     {
         return AttackDamage;
+    }
+
+    public void ChangeEnemyAnimHitToFalse()
+    {
+        anim.SetBool("Hit", false);
+    }
+
+    public void ChangeEnemyAnimDeadTo(bool state)
+    {
+        anim.SetBool("Dead", state);
+    }
+
+    public void SetDeadBool()
+    {
+        dead = true;
+    }
+
+
+    public void SetDead()
+    {
+        Destroy(gameObject);
+        //boxCollider.enabled = false;
+        //circleCollider.enabled = false;
+        //rb.gravityScale = 0;
     }
 
     // Editor içinde detection range’ini görselleþtir

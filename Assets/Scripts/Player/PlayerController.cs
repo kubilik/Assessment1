@@ -131,15 +131,7 @@ public class PlayerController : MonoBehaviour
         currentAxes--;
         Debug.Log("Axes left: " + currentAxes);
     }
-
-    public void AddAxe()
-    {
-        if (currentAxes < maxAxes)
-        {
-            currentAxes++;
-            Debug.Log("Picked up axe. Axes: " + currentAxes);
-        }
-    }
+     
 
     public void SetCanAttack(bool state)
     {

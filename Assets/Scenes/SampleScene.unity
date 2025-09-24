@@ -1261,6 +1261,7 @@ GameObject:
   - component: {fileID: 1477129653}
   - component: {fileID: 1477129655}
   - component: {fileID: 1477129652}
+  - component: {fileID: 1477129656}
   m_Layer: 0
   m_Name: MeleeEnemy
   m_TagString: Enemy
@@ -1418,6 +1419,20 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.39341927, y: 0.17765331}
   m_EdgeRadius: 0
+--- !u!114 &1477129656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477129650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d81f7414b26f3bb428f202ae159f1b96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 20
+  currentHealth: 0
 --- !u!1 &1517587601
 GameObject:
   m_ObjectHideFlags: 0
@@ -2007,9 +2022,9 @@ MonoBehaviour:
   dashCooldown: 0.5
   attackPoint: {fileID: 1324899827}
   comboResetTime: 1.5
-  ComboAttackDamage1: 10
-  ComboAttackDamage2: 20
-  ComboAttackDamage3: 30
+  ComboAttackDamage1: 1
+  ComboAttackDamage2: 2
+  ComboAttackDamage3: 3
   axePrefab: {fileID: 1674873326700359371, guid: 2fad0904bf486a442888e96da6242408, type: 3}
   axeSpawnPoint: {fileID: 200269807}
   throwForce: 2
@@ -2087,12 +2102,6 @@ MonoBehaviour:
   maxHealth: 30
   currentHealth: 0
   healthText: {fileID: 1517587603}
-  onDeath:
-    m_PersistentCalls:
-      m_Calls: []
-  onHealthChanged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1766088808
 MonoBehaviour:
   m_ObjectHideFlags: 0
