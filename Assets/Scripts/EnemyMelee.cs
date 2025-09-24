@@ -44,7 +44,9 @@ public class EnemyMelee : MonoBehaviour
 
         if (playerDistance <= detectionRange && playerDistance > attackRange)
         {
-            if (run == false)
+
+            Debug.Log("value");
+            if (run == false && alert == false)
             {
                 alert = true;
                 anim.SetBool("Alert", alert);
@@ -131,7 +133,7 @@ public class EnemyMelee : MonoBehaviour
     public void ChangeAttackToFalse()
     {
         attack = false;
-        anim.SetBool("Attack", attack); 
+        anim.SetBool("Attack", attack);
     }
 
     // Editor içinde detection range’ini görselleþtir
