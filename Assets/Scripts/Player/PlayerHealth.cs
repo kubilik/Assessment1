@@ -8,16 +8,22 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private int maxHealth = 100;
     [SerializeField] private int currentHealth;
 
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI healthText;
+    private PlayerController playerController;
+
     [Header("Events")]
     public UnityEvent onDeath;
     public UnityEvent<int, int> onHealthChanged; // (currentHealth, maxHealth)
 
-    [Header("UI")]
-    [SerializeField] private TextMeshProUGUI healthText;
 
     void Awake()
     {
         currentHealth = maxHealth;
+    }
+    private void Start()
+    {
+        playerController = GetComponent<PlayerController>();
     }
 
     public void TakeDamage(int damage)
@@ -25,6 +31,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         healthText.text = "Health: " + currentHealth.ToString();
+        playerController.ChangeAnimHitTo(true);
 
         onHealthChanged?.Invoke(currentHealth, maxHealth);
 
@@ -32,6 +39,10 @@ public class PlayerHealth : MonoBehaviour
         {
             Die();
         }
+    }
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
     }
 
     public void Heal(int amount)
@@ -47,6 +58,8 @@ public class PlayerHealth : MonoBehaviour
     {
         Debug.Log("Player died!");
         onDeath?.Invoke();
+        playerController.ChangeAnimDeadTo(true);
+        //Destroy(gameObject);
         // Ýstersen burada: Destroy(gameObject); veya respawn sistemi ekleyebilirsin
     }
 }

@@ -171,8 +171,7 @@ public class PlayerController : MonoBehaviour
         if (comboStep > 3) comboStep = 1; // 3. saldýrýdan sonra baþa dön
         anim.SetInteger("ComboCounter", comboStep);
 
-        comboResetTimer = comboResetTime; // süreyi sýfýrla
-        Debug.Log("Combo Step: " + (comboStep));
+        comboResetTimer = comboResetTime; // süreyi sýfýrla 
     }
     private void HandleDash()
     {
@@ -195,6 +194,12 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetBool("Hit", state);
     }
+
+    public void ChangeAnimDeadTo(bool state)
+    {
+        anim.SetBool("Dead", state);
+    }
+
     private void HandleJump()
     {
         anim.SetBool("isGrounded", isGrounded);

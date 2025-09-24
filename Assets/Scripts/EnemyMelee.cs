@@ -18,6 +18,7 @@ public class EnemyMelee : MonoBehaviour
 
     private Animator anim;
     private Transform player;           // Player referansý
+    private Player PlayerController;     // Player script referansý
     private int facingDirection => facingRight ? -1 : 1;
     private bool facingRight = false;   // Düþmanýn yönü
     private bool isGrounded;          // Düþmanýn yerde olup olmadýðýný kontrol etmek için
@@ -37,12 +38,19 @@ public class EnemyMelee : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        PlayerController = FindFirstObjectByType<Player>();
     }
 
     void Update()
     {
         Groundcheck();
 
+        if (PlayerController.isDead)
+        {
+            if (!isGrounded) Flip(); // Havadaysa yönünü deðiþtir
+            transform.position += Vector3.left * idleSpeed * facingDirection * Time.deltaTime;
+            return;
+        }
 
 
         bool flowControl = MovementControl();

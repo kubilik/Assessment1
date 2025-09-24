@@ -2084,15 +2084,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a72eacc3efe9741ad401d2e4d15316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 30
   currentHealth: 0
+  healthText: {fileID: 1517587603}
   onDeath:
     m_PersistentCalls:
       m_Calls: []
   onHealthChanged:
     m_PersistentCalls:
       m_Calls: []
-  healthText: {fileID: 1517587603}
 --- !u!114 &1766088808
 MonoBehaviour:
   m_ObjectHideFlags: 0

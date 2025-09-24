@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public int coins { get; private set; }
 
     private HashSet<string> keys = new HashSet<string>();
+    public bool isDead => health.GetCurrentHealth() <= 0;
 
     void Awake()
     {
