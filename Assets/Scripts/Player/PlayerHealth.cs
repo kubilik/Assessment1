@@ -1,6 +1,6 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -9,7 +9,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private int currentHealth;
 
     [Header("UI")]
-    [SerializeField] private TextMeshProUGUI healthText;
+    [SerializeField] private Slider healthSlider;
     private PlayerController playerController;
 
     void Awake()
@@ -19,13 +19,19 @@ public class PlayerHealth : MonoBehaviour
     private void Start()
     {
         playerController = GetComponent<PlayerController>();
+        healthSlider.maxValue = maxHealth;
+    }
+
+    private void Update()
+    {
+        healthSlider.value = currentHealth;
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        healthText.text = "Health: " + currentHealth.ToString();
+        healthSlider.value = currentHealth;
         playerController.ChangeAnimHitTo(true);
 
 
@@ -43,7 +49,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        healthText.text = "Health: " + currentHealth.ToString();
+        healthSlider.value = currentHealth;
     }
 
     void Die()
