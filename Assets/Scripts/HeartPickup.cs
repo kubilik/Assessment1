@@ -2,31 +2,28 @@ using UnityEngine;
 
 public class HeartPickup : MonoBehaviour
 {
-    [SerializeField] private int healAmount = 20; // Kaç can dolduracak
-    [SerializeField] private AudioSource pickupSound; // Kalp alma sesi
+    [SerializeField] private int healAmount = 20;
+    [SerializeField] private AudioSource pickupSound;
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Çarpan objede PlayerHealth var mý kontrol et
         PlayerHealth playerHealth = collision.GetComponent<PlayerHealth>();
 
         if (playerHealth != null)
         {
-            // Eðer caný full deðilse doldur
-            if (playerHealth.GetCurrentHealth() < 100) // maxHealth deðerini scriptinden alabilirsin
+            if (playerHealth.GetCurrentHealth() < 100)
             {
                 playerHealth.Heal(healAmount);
                 if (pickupSound != null)
                 {
-                    pickupSound.Play(); // Ses çal
+                    pickupSound.Play();
                 }
-                Destroy(gameObject); // Kalp objesini yok et
+                Destroy(gameObject);
             }
             else
             {
-                // Can zaten full, hiçbir þey yapma
-                Debug.Log("Can zaten full!");
+                Debug.Log("Health allready full!");
             }
         }
     }

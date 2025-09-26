@@ -34,8 +34,7 @@ public class Axe : MonoBehaviour
         if (!isStuck && collision.CompareTag("Ground"))
         {
             isStuck = true;
-
-            // Hareketi tamamen dondur
+             
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;

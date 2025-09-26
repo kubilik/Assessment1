@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    public int coinValue = 1; // bu coin kaç puan deðerinde
+    public int coinValue = 1;  
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -10,7 +10,7 @@ public class Coin : MonoBehaviour
         if (player != null)
         {
             player.AddCoins(coinValue);
-            Destroy(gameObject); // coin yok olur
+            Destroy(gameObject);  
         }
     }
 }

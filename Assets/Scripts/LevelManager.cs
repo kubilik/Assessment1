@@ -6,8 +6,8 @@ public class SceneTransition : MonoBehaviour
 {
     [SerializeField] private string nextSceneName;
     [SerializeField] private bool useBuildIndex = false;
-    [SerializeField] private AudioSource finishSound;  // inspector’dan atayabilirsin 
-    [SerializeField] private float delayBeforeLoad = 2f; // saniye cinsinden bekleme süresi
+    [SerializeField] private AudioSource finishSound;   
+    [SerializeField] private float delayBeforeLoad = 2f;  
 
     private void OnTriggerEnter2D(Collider2D other)
     {

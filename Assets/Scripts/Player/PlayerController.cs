@@ -1,7 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
@@ -11,10 +8,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce;
 
     [Header("Jumping")]
-    [SerializeField] private int extraJumps = 1; // number of mid-air jumps (double jump = 1)
+    [SerializeField] private int extraJumps = 1;  
 
     [Header("Ground Check")]
-    [SerializeField] private Transform groundCheck; // empty child transform positioned at feet
+    [SerializeField] private Transform groundCheck;  
     [SerializeField] private float groundCheckDistance = 0.1f;
     [SerializeField] private LayerMask whatIsGround;
     private bool isGrounded;
@@ -30,7 +27,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Attack")]
     [SerializeField] private Transform attackPoint;
-    [SerializeField] private float comboResetTime = 1.5f; // kaç saniye sonra resetlenecek
+    [SerializeField] private float comboResetTime = 1.5f;  
     [Space]
     [SerializeField] private int ComboAttackDamage1;
     [SerializeField] private int ComboAttackDamage2;
@@ -46,7 +43,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject axePrefab;
     [SerializeField] private Transform axeSpawnPoint;
     [SerializeField] private float throwForce = 10f;
-    [SerializeField] private float spinSpeed = 720f; // derece/sn
+    [SerializeField] private float spinSpeed = 720f;  
     [Space]
     [SerializeField] private int axeDamage = 2;
     [SerializeField] private int maxAxes = 3;
@@ -107,8 +104,7 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetBool("Attack", true);
         }
-
-        // Eðer kombodayken zaman dolarsa resetle
+         
         if (comboStep > 0)
         {
             comboResetTimer -= Time.deltaTime;
@@ -158,7 +154,7 @@ public class PlayerController : MonoBehaviour
         return hitSound;
     }
 
-    // Bu fonksiyon animasyon event’inden çaðrýlacak
+     
     public void EnableHitbox()
     {
         // Kombo hasarýný ayarla
@@ -189,21 +185,20 @@ public class PlayerController : MonoBehaviour
         attackPoint.gameObject.SetActive(false);
     }
 
-    // Komboyu ilerletmek için (animasyon baþlarken çaðýrabilirsin)
+     
     public void NextComboStep()
     {
         comboStep++;
-        if (comboStep > 3) comboStep = 1; // 3. saldýrýdan sonra baþa dön
+        if (comboStep > 3) comboStep = 1;  
         anim.SetInteger("ComboCounter", comboStep);
 
-        comboResetTimer = comboResetTime; // süreyi sýfýrla 
+        comboResetTimer = comboResetTime;  
     }
     private void HandleDash()
     {
         if (horizontal > 0.01f && !facingRight) Flip();
         else if (horizontal < -0.01f && facingRight) Flip();
-
-        // Dash input (LeftShift tuþu örnek)
+          
         if (Input.GetKeyDown(KeyCode.LeftShift) && dashCooldownTimer <= 0f && !isDashing)
         {
             isDashing = true;
@@ -282,7 +277,7 @@ public class PlayerController : MonoBehaviour
                 anim.SetBool("isDashing", false);
                 isDashing = false;
             }
-            return false; // dashing sýrasýnda normal hareketi engelle
+            return false;  
         }
 
         return true;

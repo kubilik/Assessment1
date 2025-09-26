@@ -35,14 +35,11 @@ public class MovingPlatform : MonoBehaviour
         lastPos = newPos;
 
         if (playerRb != null)
-        {
-            // yatay kayma
+        { 
             playerRb.position += new Vector2(platformVelocity.x, 0f) * Time.fixedDeltaTime;
 
-            // sadece yerdeyse VE zýplamýyorsa dikey velocity uygula
             if (playerController != null && playerController.IsGrounded())
-            {
-                // eðer oyuncu yukarý zýplýyorsa platform hýzýyla override etme
+            { 
                 if (playerRb.linearVelocity.y <= 0.01f)
                 {
                     Vector2 v = playerRb.linearVelocity;
@@ -55,8 +52,7 @@ public class MovingPlatform : MonoBehaviour
         if (Vector2.Distance(rb.position, target) < 0.05f)
         {
             target = (target == (Vector2)endPoint.position) ? (Vector2)startPoint.position : (Vector2)endPoint.position;
-
-            // endpointte firlatmayi engelle
+ 
             if (playerRb != null && playerRb.linearVelocity.y <= 0.01f)
             {
                 Vector2 v = playerRb.linearVelocity;

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Key : MonoBehaviour
 {
-    public string keyID = "default"; // her anahtarýn ID'si olabilir (ör: "gold", "silver")
+    public string keyID = "default";  
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -10,7 +10,7 @@ public class Key : MonoBehaviour
         if (player != null)
         {
             player.AddKey(keyID);
-            Destroy(gameObject); // anahtar toplanýnca yok olur
+            Destroy(gameObject);  
         }
     }
 }

@@ -6,22 +6,22 @@ public class EnemyMelee : MonoBehaviour
     [SerializeField] private float AttackDamage = 5f;
 
     [Header("Movement")]
-    [SerializeField] private float idleSpeed = 1f; // Düþmanýn hareket hýzý
-    [SerializeField] private float detectionRange = 5f;  // Player'ý algýlama mesafesi
-    [SerializeField] private float attackRange = 5f;  // Player'ý algýlama mesafesi
-    [SerializeField] private float RunSpeed = 2f; // Düþmanýn hareket hýzý
+    [SerializeField] private float idleSpeed = 1f;  
+    [SerializeField] private float detectionRange = 5f;  
+    [SerializeField] private float attackRange = 5f;   
+    [SerializeField] private float RunSpeed = 2f;  
 
     [Header("Ground Settings")]
     [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundCheckDistance = 0.1f; // Yerden kontrol mesafesi
-    [SerializeField] private LayerMask whatIsGround;    // Yerin ne olduðunu belirlemek için katman maskesi
+    [SerializeField] private float groundCheckDistance = 0.1f;  
+    [SerializeField] private LayerMask whatIsGround;     
 
     private Animator anim;
-    private Transform player;           // Player referansý
-    private Player PlayerController;     // Player script referansý
+    private Transform player;            
+    private Player PlayerController;      
     private int facingDirection => facingRight ? -1 : 1;
-    private bool facingRight = false;   // Düþmanýn yönü
-    private bool isGrounded;          // Düþmanýn yerde olup olmadýðýný kontrol etmek için
+    private bool facingRight = false;    
+    private bool isGrounded;           
     private bool alert;
     private bool dead;
     private bool attack;
@@ -55,7 +55,7 @@ public class EnemyMelee : MonoBehaviour
 
         if (PlayerController.isDead)
         {
-            if (!isGrounded) Flip(); // Havadaysa yönünü deðiþtir
+            if (!isGrounded) Flip();  
             transform.position += Vector3.left * idleSpeed * facingDirection * Time.deltaTime;
             return;
         }
@@ -70,7 +70,7 @@ public class EnemyMelee : MonoBehaviour
 
     private bool MovementControl()
     {
-        if (!isGrounded) Flip(); // Havadaysa yönünü deðiþtir
+        if (!isGrounded) Flip();  
         playerDistance = Vector2.Distance(transform.position, player.position);
 
 
@@ -82,10 +82,10 @@ public class EnemyMelee : MonoBehaviour
                 anim.SetBool("Alert", alert);
                 idle = false;
                 anim.SetBool("Idle", idle);
-                return false; // Alert animasyonu oynatýldýktan sonra bekle
+                return false;  
             }
 
-            // Player düþmanýn saðýnda mý solunda mý kontrol et
+             
             if (player.position.x > transform.position.x && !facingRight)
             {
                 Flip();
@@ -94,7 +94,7 @@ public class EnemyMelee : MonoBehaviour
             {
                 Flip();
             }
-            // Düþman, player'a doðru hareket etsin
+             
             if (isGrounded)
             {
                 Vector2 direction = (player.position - transform.position).normalized;
@@ -109,8 +109,7 @@ public class EnemyMelee : MonoBehaviour
             anim.SetBool("Idle", idle);
         }
         if (playerDistance <= attackRange)
-        {
-            // Player düþmanýn saðýnda mý solunda mý kontrol et
+        { 
             if (player.position.x > transform.position.x && !facingRight)
             {
                 Flip();
@@ -137,7 +136,7 @@ public class EnemyMelee : MonoBehaviour
     {
         facingRight = !facingRight;
         Vector3 scale = transform.localScale;
-        scale.x *= -1; // X ekseninde yansýtma
+        scale.x *= -1;  
         transform.localScale = scale;
     }
 
@@ -185,13 +184,10 @@ public class EnemyMelee : MonoBehaviour
 
     public void SetDead()
     {
-        Destroy(gameObject);
-        //boxCollider.enabled = false;
-        //circleCollider.enabled = false;
-        //rb.gravityScale = 0;
+        Destroy(gameObject); 
     }
 
-    // Editor içinde detection range’ini görselleþtir
+     
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;

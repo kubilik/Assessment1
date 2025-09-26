@@ -47,9 +47,7 @@ public class EnemyHealth : MonoBehaviour
     {
         Debug.Log("Enemy died!");
         deathSound.Play();
-        anim.SetBool("Dead", true);
-        //Destroy(gameObject);
-        // Ýstersen burada: Destroy(gameObject); veya respawn sistemi ekleyebilirsin
+        anim.SetBool("Dead", true); 
     }
 
 }

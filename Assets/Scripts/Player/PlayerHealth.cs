@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -57,8 +56,6 @@ public class PlayerHealth : MonoBehaviour
     {
         Debug.Log("Player died!");
         playerController.GetPlayerDeadSound().Play();
-        playerController.ChangeAnimDeadTo(true);
-        //Destroy(gameObject);
-        // Ýstersen burada: Destroy(gameObject); veya respawn sistemi ekleyebilirsin
+        playerController.ChangeAnimDeadTo(true); 
     }
 }

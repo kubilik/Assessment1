@@ -16,14 +16,7 @@ public class Player : MonoBehaviour
     {
         controller = GetComponent<PlayerController>();
         health = GetComponent<PlayerHealth>();
-    }
-
-    void Update()
-    {
-        // Ýlerde inputlarý buradan yönlendirebilirsin
-        // controller.Move(...);
-        // controller.Jump();
-    }
+    } 
 
     public void TakeDamage(int damage)
     {
@@ -37,8 +30,7 @@ public class Player : MonoBehaviour
     public void AddCoins(int amount)
     {
         coins += amount;
-        Debug.Log("Coins: " + coins);
-        // buradan UI güncellemesi veya ses efekti çaðýrabilirsin
+        Debug.Log("Coins: " + coins); 
     }
 
     public void AddKey(string keyID)
@@ -47,7 +39,7 @@ public class Player : MonoBehaviour
         Debug.Log("Key collected: " + keyID);
     }
 
-    //idleri anahtarlaeýn üzerinde olucak if in içine yazman için var burasý 
+     
     public bool HasKey(string keyID)
     {
         return keys.Contains(keyID);
