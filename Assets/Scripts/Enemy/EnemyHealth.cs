@@ -6,6 +6,10 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private int maxHealth = 100;
     [SerializeField] private int currentHealth;
 
+
+    [SerializeField] private AudioSource hitSound;
+    [SerializeField] private AudioSource deathSound;
+
     private Animator anim;
     private EnemyMelee enemyMelee;
 
@@ -25,6 +29,7 @@ public class EnemyHealth : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         anim.SetBool("Hit", true);
+        hitSound.Play();
 
         if (currentHealth <= 0)
         {
@@ -41,6 +46,7 @@ public class EnemyHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Enemy died!");
+        deathSound.Play();
         anim.SetBool("Dead", true);
         //Destroy(gameObject);
         // Ýstersen burada: Destroy(gameObject); veya respawn sistemi ekleyebilirsin

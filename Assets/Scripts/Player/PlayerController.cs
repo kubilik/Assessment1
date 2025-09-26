@@ -50,6 +50,18 @@ public class PlayerController : MonoBehaviour
     [Space]
     [SerializeField] private int axeDamage = 2;
     [SerializeField] private int maxAxes = 3;
+    [SerializeField] private float axeLifetime = 5f;
+
+    [Header("Sounds")]
+
+    public AudioSource jumpSound;
+    [SerializeField] private AudioSource dashSound;
+    [SerializeField] private AudioSource hitSound;
+    [SerializeField] private AudioSource deathSound;
+    [SerializeField] private AudioSource axeThrowSound;
+    [SerializeField] private AudioSource attackSound1;
+    [SerializeField] private AudioSource attackSound2;
+    [SerializeField] private AudioSource attackSound3;
 
     private int currentAxes;
 
@@ -85,6 +97,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             anim.SetBool("ThrowAxe", true);
+            axeThrowSound.Play();
         }
     }
 
@@ -105,15 +118,8 @@ public class PlayerController : MonoBehaviour
                 anim.SetInteger("ComboCounter", comboStep);
             }
         }
-
-        //if (Input.GetKey(KeyCode.Mouse0))
-        //{
-        //    if (canAttack)
-        //        anim.SetBool("Attack", true);
-        //} 
     }
 
-    // Animasyon eventinden çaðrýlacak
     public void SpawnAxe()
     {
         if (currentAxes <= 0)
@@ -129,9 +135,12 @@ public class PlayerController : MonoBehaviour
         Rigidbody2D rb = axe.GetComponent<Rigidbody2D>();
         rb.linearVelocity = transform.localScale.x * Vector2.right * throwForce;
 
+        Destroy(axe, axeLifetime);
+
         currentAxes--;
         Debug.Log("Axes left: " + currentAxes);
     }
+
 
 
     public void SetCanAttack(bool state)
@@ -139,14 +148,37 @@ public class PlayerController : MonoBehaviour
         canAttack = state;
     }
 
+    public AudioSource GetPlayerDeadSound()
+    {
+        return deathSound;
+    }
+
+    public AudioSource GetPlayerHitSound()
+    {
+        return hitSound;
+    }
+
     // Bu fonksiyon animasyon event’inden çaðrýlacak
     public void EnableHitbox()
     {
         // Kombo hasarýný ayarla
         int damage = 1;
-        if (comboStep == 1) damage = ComboAttackDamage1;
-        else if (comboStep == 2) damage = ComboAttackDamage2;
-        else if (comboStep == 3) damage = ComboAttackDamage3;
+        if (comboStep == 1)
+        {
+            damage = ComboAttackDamage1;
+            attackSound1.Play();
+        }
+        else if (comboStep == 2)
+        {
+            damage = ComboAttackDamage2;
+            attackSound2.Play();
+        }
+
+        else if (comboStep == 3)
+        {
+            damage = ComboAttackDamage3;
+            attackSound3.Play();
+        }
 
         hitboxScript.damage = damage;
         attackPoint.gameObject.SetActive(true);
@@ -177,6 +209,7 @@ public class PlayerController : MonoBehaviour
             isDashing = true;
             dashTimeLeft = dashTime;
             dashCooldownTimer = dashCooldown;
+            dashSound.Play();
         }
 
         if (dashCooldownTimer > 0f)
@@ -238,6 +271,12 @@ public class PlayerController : MonoBehaviour
 
             dashTimeLeft -= Time.fixedDeltaTime;
             anim.SetBool("isDashing", true);
+
+            if (!dashSound.isPlaying)
+            {
+                dashSound.Play();
+            }
+
             if (dashTimeLeft <= 0f)
             {
                 anim.SetBool("isDashing", false);
@@ -253,6 +292,7 @@ public class PlayerController : MonoBehaviour
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        jumpSound.Play();
     }
 
     private void HandleCollision()

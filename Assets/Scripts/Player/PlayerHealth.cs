@@ -33,6 +33,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         healthSlider.value = currentHealth;
         playerController.ChangeAnimHitTo(true);
+        playerController.GetPlayerHitSound().Play();
 
 
         if (currentHealth <= 0)
@@ -55,7 +56,7 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Player died!");
-
+        playerController.GetPlayerDeadSound().Play();
         playerController.ChangeAnimDeadTo(true);
         //Destroy(gameObject);
         // Ýstersen burada: Destroy(gameObject); veya respawn sistemi ekleyebilirsin

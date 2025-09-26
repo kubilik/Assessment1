@@ -3,6 +3,8 @@ using UnityEngine;
 public class HeartPickup : MonoBehaviour
 {
     [SerializeField] private int healAmount = 20; // Kaç can dolduracak
+    [SerializeField] private AudioSource pickupSound; // Kalp alma sesi
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -15,6 +17,10 @@ public class HeartPickup : MonoBehaviour
             if (playerHealth.GetCurrentHealth() < 100) // maxHealth deðerini scriptinden alabilirsin
             {
                 playerHealth.Heal(healAmount);
+                if (pickupSound != null)
+                {
+                    pickupSound.Play(); // Ses çal
+                }
                 Destroy(gameObject); // Kalp objesini yok et
             }
             else

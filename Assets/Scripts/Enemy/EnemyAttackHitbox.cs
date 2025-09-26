@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyAttackHitbox : MonoBehaviour
 {
-    public int damage = 1; // varsayýlan hasar
+    public int damage = 1; 
     private EnemyMelee enemyMelee;
     private Player player;
 
@@ -21,8 +21,6 @@ public class EnemyAttackHitbox : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             player.TakeDamage(damage);
-            // Düþmana damage scripti varsa çaðýrabilirsin:
-            // collision.GetComponent<EnemyHealth>()?.TakeDamage(damage);
         }
     }
 }

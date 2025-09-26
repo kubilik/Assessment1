@@ -1,24 +1,39 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class SceneTransition : MonoBehaviour
 {
-    [SerializeField] private string nextSceneName; // Inspector'dan ayarlayabilirsin
-    [SerializeField] private bool useBuildIndex = false; // Ýstersen build index de kullanabilirsin
+    [SerializeField] private string nextSceneName;
+    [SerializeField] private bool useBuildIndex = false;
+    [SerializeField] private AudioSource finishSound;  // inspector’dan atayabilirsin 
+    [SerializeField] private float delayBeforeLoad = 2f; // saniye cinsinden bekleme süresi
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player")) // Player taglý objeye temas ederse
+        if (other.CompareTag("Player"))
         {
-            if (useBuildIndex)
-            {
-                int currentIndex = SceneManager.GetActiveScene().buildIndex;
-                SceneManager.LoadScene(currentIndex + 1); // sýradaki sahneyi yükler
-            }
-            else
-            {
-                SceneManager.LoadScene(nextSceneName); // inspector'dan ismini girdiðin sahneyi yükler
-            }
+            StartCoroutine(PlaySoundAndLoad());
+        }
+    }
+
+    private IEnumerator PlaySoundAndLoad()
+    {
+        if (finishSound != null)
+        {
+            finishSound.Play();
+        }
+
+        yield return new WaitForSeconds(delayBeforeLoad);
+
+        if (useBuildIndex)
+        {
+            int currentIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentIndex + 1);
+        }
+        else
+        {
+            SceneManager.LoadScene(nextSceneName);
         }
     }
 }
